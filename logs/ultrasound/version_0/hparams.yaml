@@ -1,0 +1,32 @@
+attn_drop_rate: 0.0
+batch_size: 1
+depths:
+- 2
+- 2
+- 18
+- 2
+drop_path_rate: 0.2
+drop_rate: 0.0
+embed_dim: 96
+frozen_stages: 3
+in_chans: 3
+mlp_ratio: 4.0
+norm_layer: !!python/name:torch.nn.modules.normalization.LayerNorm ''
+num_heads:
+- 3
+- 6
+- 12
+- 24
+patch_norm: false
+patch_size: !!python/tuple
+- 4
+- 4
+- 4
+pretrained: pretrained/swin_small_patch4_window7_224.pth
+qk_scale: null
+qkv_bias: true
+use_checkpoint: false
+window_size: !!python/tuple
+- 2
+- 7
+- 7
