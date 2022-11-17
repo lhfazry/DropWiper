@@ -66,7 +66,7 @@ class ARDCNN(nn.Module):
         self.last_conv = nn.Conv2d(32, 1, 3, bias=False)
         self.sigmoid = nn.Sigmoid()
 
-    def forward(self):
+    def forward(self, x):
         x = self.conv_block1(x)
         x = self.conv_block2(x)
         x = self.conv1x(x)
