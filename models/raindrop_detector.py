@@ -8,18 +8,16 @@ import segmentation_models_pytorch as smp
 
 from torch.nn import functional as F
 from backbones.ard_cnn import ARDCNN
-from losses.rmse import RMSE
-from torchmetrics import Dice
-
+from backbones.unet import UNet
 
 class RaindropDetector(pl.LightningModule):
     def __init__(self, in_channels=3):
         super().__init__()
         self.save_hyperparameters()
-        ##self.dice = Dice()
         self.dice = smp.losses.DiceLoss(mode='binary')
 
-        self.raindrop_detector = ARDCNN(in_channels)
+        #self.raindrop_detector = ARDCNN(in_channels)
+        self.raindrop_detector = UNet(out_classes=1)
 
     def forward(self, x):
         return self.raindrop_detector(x)
