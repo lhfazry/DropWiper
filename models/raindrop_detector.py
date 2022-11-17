@@ -44,7 +44,7 @@ class RaindropDetector(pl.LightningModule):
     def configure_optimizers(self):
         # define optimizer
         optimizer = torch.optim.Adam([ 
-            dict(params=self.parameters(), lr=0.00008),
+            dict(params=self.parameters(), lr=0.0008),
         ])
 
         # define learning rate scheduler (not used in this NB)
