@@ -27,8 +27,9 @@ class RaindropDetector(pl.LightningModule):
         prediction = self(image)
         loss = self.dice(prediction, mask)
 
-        self.log('loss', loss, on_epoch=True)
-        
+        self.log("loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
+        self.logger.experiment.add_scalars('loss', {'train': loss}, global_step=self.current_epoch) 
+
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -36,7 +37,9 @@ class RaindropDetector(pl.LightningModule):
         prediction = self(image)
         loss = self.dice(prediction, mask)
 
-        self.log('val_loss', loss, on_epoch=True)
+        self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
+        self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
+        
 
     def configure_optimizers(self):
         # define optimizer
