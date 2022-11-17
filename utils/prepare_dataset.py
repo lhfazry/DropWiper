@@ -30,6 +30,8 @@ def prepare_dataset(input_dir, output_dir):
     data = glob(os.path.join(input_dir, "*_B.png")).sort()
     masks = glob(os.path.join(input_dir, "*_M.png")).sort()
 
+    print(data)
+
     data_train, data_val, masks_train, masks_val = train_test_split(data, masks, 
         test_size=0.2, random_state=42)
 
