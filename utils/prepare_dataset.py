@@ -5,7 +5,6 @@ import pandas as pd
 import torch
 import cv2
 import logging
-import imutils
 import numpy as np
 import shutil
 from pathlib import Path
