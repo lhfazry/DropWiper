@@ -1,2 +1,3 @@
 pytorch_lightning
 albumentations
+segmentation-models-pytorch

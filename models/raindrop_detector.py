@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torchmetrics
 import torch.nn.functional as F
+import segmentation_models_pytorch as smp
 
 from torch.nn import functional as F
 from backbones.ard_cnn import ARDCNN
@@ -15,7 +16,8 @@ class RaindropDetector(pl.LightningModule):
     def __init__(self, in_channels=3):
         super().__init__()
         self.save_hyperparameters()
-        self.dice = Dice()
+        ##self.dice = Dice()
+        self.dice = smp.utils.losses.DiceLoss()
 
         self.raindrop_detector = ARDCNN(in_channels)
 
