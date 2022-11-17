@@ -1,0 +1,193 @@
+import os
+import pathlib
+import collections
+import numpy as np
+import torch
+import torch.utils.data
+import cv2  # pytype: disable=attribute-error
+import random
+from glob import glob
+
+class RaindropDataset(torch.utils.data.Dataset):
+    def __init__(self, root, data, masks,
+            augmented=False):
+
+        self.folder = pathlib.Path(root)
+        self.augmented = augmented
+
+        if not os.path.exists(root):
+            raise ValueError("Path does not exist: " + root)
+
+        #self.data = glob(os.path.join(root, "*_B.png")).sort()
+        #self.masks = glob(os.path.join(root, "*_M.png")).sort()
+        self.data = data
+        self.masks = masks
+            
+    def __getitem__(self, index):
+        data = self.data_df.iloc[index].to_dict()
+        label = self.label_df.iloc[index].to_dict()
+
+        video_name = data["video_name"]
+
+        if video_name.startswith('_'):
+            video_name = video_name.replace("_", "", 1)
+
+        #row = self.df.iloc[index].to_dict()
+        path = os.path.join(self.folder, video_name)
+        #print(f"Load video from: {path}")
+
+        # Load video into np.array
+        video = loadvideo(path, self.frame_dim) #(F, H, W, C)
+        #.astype(np.float32) / 255.0
+        #key = os.path.splitext(self.fnames[index])[0]
+
+        # video = np.moveaxis(video, 0, 1) #(F, C, H, W)
+
+        F, H, W, C = video.shape
+        #sampling_rate = 1
+
+        #if F > 1024:
+        #    sampling_rate = 3
+        #elif F > 768:
+        #    sampling_rate = 2
+        #elif F > 512:
+        #    sampling_rate = 1
+
+        #sampling_rate = round(F / self.max_frames)
+
+        if self.sampling_strategy == "truncate":
+            video = video[:self.max_frames if F > self.max_frames else F,:,:,:]
+        elif self.sampling_strategy == "down-sample":
+            sampling_rate = round(F / self.max_frames)
+            video = video[::1 if sampling_rate == 0 else sampling_rate,:,:,:]
+        elif self.sampling_strategy == "adaptive-down-sample":
+            if F > self.max_frames:
+                sampling_rate = round(F / self.max_frames)
+                #video = video[::1 if sampling_rate == 0 else sampling_rate,:,:,:]
+                video = video[::sampling_rate,:,:,:]
+
+        if video.shape[0] > self.max_frames:
+            video = video[:self.max_frames,:,:,:]
+        elif video.shape[0] < self.max_frames:
+            #print(f"{row['video_name']}: {video.shape}")
+            pads = np.zeros((self.max_frames - video.shape[0], H, W, C))
+
+            #print(f"padding shape: {pads.shape}")
+            video = np.concatenate((video, pads), axis=0)
+
+        assert video.shape[0] == self.max_frames
+
+        # agar augmentasi bekerja
+        video = video.astype(np.float32)
+
+        if data["video_name"].startswith('_'):
+            video = np.asarray(self.vid_upsampling(video)) # (F, H, W, C)
+
+        if self.augmented:
+            video = np.asarray(self.vid_augs(video)) # (F, H, W, C)
+        
+        #saved_video = nvideo.transpose((0, 2, 3, 1))
+        #print(f'after video size: {saved_video.shape}: {filename}')
+        #save_video(filename + ".avi", np.asarray(saved_video).astype(np.uint8), 50)
+
+        label = np.array([
+            label["neutral"],
+            label["happy"],
+            label["sad"],
+            label["contempt"],
+            label["anger"],
+            label["disgust"],
+            label["surprised"],
+            label["fear"]
+        ]).astype(np.float32)
+
+        video = video.transpose((0, 3, 1, 2)) # (F, C, H, W)
+        video = video / 255.0
+        
+        return {'video': video, 'label': label}
+            
+    def __len__(self):
+        return len(self.data_df)
+
+def loadvideo(filename: str, frame_dim):
+    """Loads a video from a file.
+
+    Args:
+        filename (str): filename of video
+
+    Returns:
+        A np.ndarray with dimensions (channels=3, frames, height, width). The
+        values will be uint8's ranging from 0 to 255.
+
+    Raises:
+        FileNotFoundError: Could not find `filename`
+        ValueError: An error occurred while reading the video
+    """
+
+    if not os.path.exists(filename):
+        raise FileNotFoundError(filename)
+
+    capture = cv2.VideoCapture(filename)
+
+    frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
+    #frame_width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+    #frame_height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+
+    v = np.zeros((frame_count, frame_dim, frame_dim, 3), np.uint8) # (F, W, H, C)
+
+    for count in range(frame_count):
+        ret, frame = capture.read()
+        
+        if not ret:
+            raise ValueError("Failed to load frame #{} of {}.".format(count, filename))
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        frame = cv2.resize(frame, (frame_dim, frame_dim))
+        v[count] = frame
+
+        count += 1
+
+    # capture.release()
+    #v = v.transpose((3, 0, 1, 2)) #(C, F, H, W)
+
+    assert v.size > 0
+
+    return v # (F, W, H, C)
+
+def count_frame(filename: str):
+    if not os.path.exists(filename):
+        raise FileNotFoundError(filename)
+
+    capture = cv2.VideoCapture(filename)
+
+    frame_count = int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
+    return frame_count
+
+def save_video(name, video, fps):
+    fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+    data = cv2.VideoWriter(name, fourcc, float(fps), (video.shape[1], video.shape[2]))
+
+    for v in video:
+        data.write(v)
+
+    data.release()
+
+def center_crop_arr(pil_image, image_size):
+    # We are not on a new enough PIL to support the `reducing_gap`
+    # argument, which uses BOX downsampling at powers of two first.
+    # Thus, we do it by hand to improve downsample quality.
+    while min(*pil_image.size) >= 2 * image_size:
+        pil_image = pil_image.resize(
+            tuple(x // 2 for x in pil_image.size), resample=Image.BOX
+        )
+
+    scale = image_size / min(*pil_image.size)
+    pil_image = pil_image.resize(
+        tuple(round(x * scale) for x in pil_image.size), resample=Image.BICUBIC
+    )
+
+    arr = np.array(pil_image)
+    crop_y = (arr.shape[0] - image_size) // 2
+    crop_x = (arr.shape[1] - image_size) // 2
+
+    return arr[crop_y : crop_y + image_size, crop_x : crop_x + image_size]

@@ -1,7 +1,7 @@
 import argparse
 import pytorch_lightning as pl
 from models.ultra_swin import UltraSwin
-from datamodules.EchoNetDataModule import EchoNetDataModule
+from datamodules.RaindropDataModule import EchoNetDataModule
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 

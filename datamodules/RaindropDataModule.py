@@ -1,19 +1,21 @@
 import pytorch_lightning as pl
 from torch.utils.data import random_split, DataLoader
 from torchvision import transforms
-from datasets.EchoSet import EchoSet
+from datasets.RaindropDataset import RaindropDataset
+from glob import glob
 
-class EchoNetDataModule(pl.LightningDataModule):
-    def __init__(self, data_dir: str = "datasets/EchoNet", 
+class RaindropDataModule(pl.LightningDataModule):
+    def __init__(self, data_dir: str = "datasets/RainDropS", 
             batch_size: int = 32, 
-            num_workers: int = 8, 
-            dataset_mode: str = 'repeat'):
+            num_workers: int = 8):
         super().__init__()
 
         self.data_dir = data_dir
         self.batch_size = batch_size
         self.num_workers = num_workers
-        self.dataset_mode = dataset_mode
+
+        self.data = glob(os.path.join(root, "*_B.png")).sort()
+        self.masks = glob(os.path.join(root, "*_M.png")).sort()
 
         #self.transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))])
 
