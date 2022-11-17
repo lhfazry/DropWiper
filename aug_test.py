@@ -7,7 +7,7 @@ import collections
 import numpy as np
 import torch
 import cv2
-from datasets.EchoSet import loadvideo
+from datasets.RaindropDataset import loadvideo
 
 
 def save_video(name, video, fps):
