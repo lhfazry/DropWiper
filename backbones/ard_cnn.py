@@ -9,7 +9,7 @@ class ConvtBlock(nn.Module):
             nn.ConvTranspose2d(in_channels, out_channels, kernel_size=kernel_size, 
                 stride=stride, padding=0, bias=False),
             nn.BatchNorm2d(out_channels),
-            nn.LeakyReLU(inplace=True),
+            nn.LeakyReLU(inplace=True)
         )
 
     def forward(self, x):
