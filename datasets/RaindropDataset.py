@@ -19,6 +19,20 @@ class RaindropDataset(torch.utils.data.Dataset):
         self.data = glob(os.path.join(data_dir, "*.png"))
         self.masks = glob(os.path.join(masks_dir, "*.png"))
 
+        train_transform = [    
+            album.RandomCrop(height=64, width=64, always_apply=True),
+            album.OneOf(
+                [
+                    album.HorizontalFlip(p=1),
+                    album.VerticalFlip(p=1),
+                    album.RandomRotate90(p=1),
+                ],
+                p=0.75,
+            ),
+        ]
+
+        self.augmentation = album.Compose(train_transform)
+
             
     def __getitem__(self, index):
         img_path = self.data[index]
@@ -28,21 +42,7 @@ class RaindropDataset(torch.utils.data.Dataset):
         mask = cv2.cvtColor(cv2.imread(mask_path), cv2.COLOR_BGR2GRAY)
 
         if self.augmented:
-            train_transform = [    
-                album.RandomCrop(height=64, width=64, always_apply=True),
-                album.OneOf(
-                    [
-                        album.HorizontalFlip(p=1),
-                        album.VerticalFlip(p=1),
-                        album.RandomRotate90(p=1),
-                    ],
-                    p=0.75,
-                ),
-            ]
-
-            augmentation = album.Compose(train_transform)
-            
-            sample = augmentation(image=image, mask=mask)
+            sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
 
         mask = np.where(mask > 0, 1, 0)
