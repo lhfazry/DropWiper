@@ -7,7 +7,7 @@ class ConvtBlock(nn.Module):
 
         self.convt = nn.Sequential(
             nn.ConvTranspose2d(in_channels, out_channels, kernel_size=kernel_size, 
-                stride=stride, padding='same', bias=False),
+                stride=stride, padding=0, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.LeakyReLU(inplace=True),
         )
