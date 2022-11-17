@@ -38,13 +38,13 @@ def prepare_dataset(input_dir, output_dir):
 
     for item_data, item_mask,  in zip(data_train, masks_train):
         filename = Path(item_data).name.replace('_B', '')
-        shutil.copy(item_data, os.path.join('train', 'data', filename))
-        shutil.copy(item_mask, os.path.join('train', 'masks', filename))
+        shutil.copy(item_data, os.path.join(output_dir, 'train', 'data', filename))
+        shutil.copy(item_mask, os.path.join(output_dir, 'train', 'masks', filename))
 
     for item_data, item_mask,  in zip(data_val, masks_val):
         filename = Path(item_data).name.replace('_B', '')
-        shutil.copy(item_data, os.path.join('val', 'data', filename))
-        shutil.copy(item_mask, os.path.join('val', 'masks', filename))
+        shutil.copy(item_data, os.path.join(output_dir, 'val', 'data', filename))
+        shutil.copy(item_mask, os.path.join(output_dir, 'val', 'masks', filename))
 
 def parse_args():
     parser = argparse.ArgumentParser(
