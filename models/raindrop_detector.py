@@ -17,7 +17,7 @@ class RaindropDetector(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters()
         ##self.dice = Dice()
-        self.dice = smp.losses.DiceLoss()
+        self.dice = smp.losses.DiceLoss(mode='binary')
 
         self.raindrop_detector = ARDCNN(in_channels)
 
