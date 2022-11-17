@@ -27,10 +27,11 @@ def prepare_dataset(input_dir, output_dir):
         for sd in subdir:
             create_dir_if_not_exists(os.path.join(output_dir, sp, sd))
 
-    data = glob(os.path.join(input_dir, "*_B.png")).sort()
-    masks = glob(os.path.join(input_dir, "*_M.png")).sort()
+    data = glob(os.path.join(input_dir, "*_B.png"))
+    masks = glob(os.path.join(input_dir, "*_M.png"))
 
-    print(data)
+    data.sort()
+    masks.sort()
 
     data_train, data_val, masks_train, masks_val = train_test_split(data, masks, 
         test_size=0.2, random_state=42)
