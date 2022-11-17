@@ -3,7 +3,7 @@ from torch import nn
 
 class ConvtBlock(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, stride=1):
-        super(ConvBlock, self).__init__()
+        super(ConvtBlock, self).__init__()
 
         self.convt = nn.Sequential(
             nn.ConvTranspose2d(in_channels, out_channels, kernel_size=kernel_size, 
@@ -31,7 +31,7 @@ class ConvBlock(nn.Module):
 
 class ResidualBlock(nn.Module):
     def __init__(self, in_channels):
-        super(ConvBlock, self).__init__()
+        super(ResidualBlock, self).__init__()
 
         self.residual = nn.Sequential(
             nn.BatchNorm2d(in_channels),
