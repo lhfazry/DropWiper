@@ -15,7 +15,7 @@ class RaindropDetector(pl.LightningModule):
         super().__init__()
         self.save_hyperparameters()
         self.dice = smp.losses.DiceLoss(mode='binary')
-        self.bce = nn.BCELoss()
+        self.bce = nn.BCEWithLogitsLoss()
 
         self.raindrop_detector = ARDCNN(in_channels)
         #self.raindrop_detector = UNet(out_classes=1)

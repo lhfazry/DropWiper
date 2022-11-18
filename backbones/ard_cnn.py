@@ -78,4 +78,4 @@ class ARDCNN(nn.Module):
         x = self.conv_block4(x)
         x = self.last_conv(x)
 
-        return self.sigmoid(x)
+        return x #self.sigmoid(x)
