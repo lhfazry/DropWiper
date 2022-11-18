@@ -32,7 +32,6 @@ class RaindropDataset(torch.utils.data.Dataset):
         ]
 
         self.augmentation = album.Compose(train_transform)
-
             
     def __getitem__(self, index):
         img_path = self.data[index]
