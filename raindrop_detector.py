@@ -8,7 +8,7 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="train", help="Train or test")
 parser.add_argument("--data_dir", type=str, default="datasets/EchoNet", help="Path ke datasets")
-parser.add_argument("--batch_size", type=int, default=8, help="Batch size")
+parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
 parser.add_argument("--max_epochs", type=int, default=100, help="Max epochs")
 parser.add_argument("--num_workers", type=int, default=8, help="num_workers")
 parser.add_argument("--accelerator", type=str, default='cpu', help="Accelerator")
@@ -38,11 +38,11 @@ if __name__ == '__main__':
     trainer = pl.Trainer(accelerator=accelerator, 
                 max_epochs=max_epochs, 
                 num_sanity_val_steps=1, 
-                auto_scale_batch_size=True, 
+                #auto_scale_batch_size=True, 
                 enable_model_summary=True,
                 logger=logger,
                 precision=16,
-                accumulate_grad_batches=2,
+                #accumulate_grad_batches=2,
                 callbacks=[EarlyStopping(monitor="val_loss", mode="min", patience=10)])
 
     if mode == 'train':
