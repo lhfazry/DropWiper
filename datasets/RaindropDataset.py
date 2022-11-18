@@ -45,7 +45,7 @@ class RaindropDataset(torch.utils.data.Dataset):
             image, mask = sample['image'], sample['mask']
 
         mask = np.where(mask > 0, 1, 0)
-        mask = np.expand_dims(mask, axis=0)
+        mask = np.expand_dims(mask, axis=1)
 
         image = image.transpose(2, 0, 1).astype('float32')
         mask = mask.transpose(2, 0, 1)#.astype('float32')
