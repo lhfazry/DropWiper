@@ -7,7 +7,9 @@ import torch.utils.data
 import cv2  # pytype: disable=attribute-error
 import random
 import albumentations as album
+import imutils
 from glob import glob
+from utils.image_utils import center_crop
 
 class RaindropDataset(torch.utils.data.Dataset):
     def __init__(self, data_dir, masks_dir = None, augmented=False):
@@ -44,9 +46,6 @@ class RaindropDataset(torch.utils.data.Dataset):
             sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
 
-        image = image.transpose(2, 0, 1).astype('float32')
-        image = (image - 128) / 128.
-
         if self.masks is not None:
             mask_path = self.masks[index]
             mask = cv2.cvtColor(cv2.imread(mask_path), cv2.COLOR_BGR2GRAY)
@@ -54,7 +53,12 @@ class RaindropDataset(torch.utils.data.Dataset):
             mask = np.expand_dims(mask, axis=0)
 
             return image, mask
+        else:
+            image = center_crop(image, (128, 128))
         
+        image = image.transpose(2, 0, 1).astype('float32')
+        image = (image - 128) / 128.
+
         return image
             
     def __len__(self):
