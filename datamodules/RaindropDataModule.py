@@ -1,7 +1,7 @@
 import pytorch_lightning as pl
 import os
 from torch.utils.data import DataLoader
-from datasets.RaindropDataset import RaindropDataset
+from datasets.RaindropDataset import RaindropDataset, RaindropPredictDataset
 from glob import glob
 
 class RaindropDataModule(pl.LightningDataModule):
@@ -40,8 +40,8 @@ class RaindropDataModule(pl.LightningDataModule):
                                 masks_dir=os.path.join(self.root, 'val', 'masks'))
 
         if stage == "predict" or stage is None:
-            self.predict_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'val', 'data'),
+            self.predict_set   = RaindropPredictDataset(
+                                data_dir=os.path.join(self.root, 'data', 'data'),
                                 masks_dir=os.path.join(self.root, 'val', 'masks'))
 
     def train_dataloader(self):

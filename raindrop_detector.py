@@ -7,12 +7,13 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="train", help="Train or test")
-parser.add_argument("--data_dir", type=str, default="datasets/EchoNet", help="Path ke datasets")
+parser.add_argument("--data_dir", type=str, default="datasets/RainDrop", help="Path ke datasets")
 parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
 parser.add_argument("--max_epochs", type=int, default=100, help="Max epochs")
 parser.add_argument("--num_workers", type=int, default=8, help="num_workers")
 parser.add_argument("--accelerator", type=str, default='cpu', help="Accelerator")
 parser.add_argument("--logs_dir", type=str, default='lightning_logs', help="Log dir")
+parser.add_argument("--ckpt_path", type=str, default='checkpoints/epoch=40-step=25625.ckpt', help="")
 parser.add_argument("--log", action='store_true', help="log")
 
 params = parser.parse_args()
@@ -25,6 +26,7 @@ if __name__ == '__main__':
     num_workers = params.num_workers
     accelerator = params.accelerator
     logs_dir = params.logs_dir
+    ckpt_path = params.ckpt_path
     log = params.log
 
     logger = TensorBoardLogger(save_dir=logs_dir, name="raindrop_detector")
@@ -63,6 +65,8 @@ if __name__ == '__main__':
     if mode == 'predict':
         if not log:
             trainer.logger = False
+
+        trainer.ckpt_path = ckpt_path
 
         predicts = trainer.predict(model=raindrop_detector, datamodule=data_module)
 

@@ -50,7 +50,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Prepare datasets')
     parser.add_argument("--input_dir", type=str, default="/workspace/DropWiper/datasets/RainDropS/", help="Input directory")
-    parser.add_argument("--output_dir", type=str, default="/workspace/DropWiper/datasets/RainDrop/", help="Output directory")
+    parser.add_argument("--output_dir", type=str, default="/workspace/DropWiper/datasets/RainDropS_valid/", help="Output directory")
     args = parser.parse_args()
 
     return args

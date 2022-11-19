@@ -49,7 +49,7 @@ class RaindropDataset(torch.utils.data.Dataset):
 
         image = image.transpose(2, 0, 1).astype('float32')
         #mask = mask.transpose(2, 0, 1)#.astype('float32')
-        image /= 255.
+        image = (image - 128) / 128.
 
         return image, mask
             
