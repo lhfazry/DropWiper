@@ -26,7 +26,7 @@ class RaindropDetector(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         image, mask = batch
         prediction = self(image)
-        loss = self.dice(F.sigmoid(prediction), mask)
+        loss = self.dice(prediction, mask)
         #loss = self.bce(prediction, mask.float())
 
         self.log("loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
@@ -37,7 +37,7 @@ class RaindropDetector(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         image, mask = batch
         prediction = self(image)
-        loss = self.dice(F.sigmoid(prediction), mask)
+        loss = self.dice(prediction, mask)
         #loss = self.bce(prediction, mask.float())
 
         self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
