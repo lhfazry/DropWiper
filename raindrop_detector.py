@@ -66,8 +66,7 @@ if __name__ == '__main__':
         if not log:
             trainer.logger = False
 
-        trainer.ckpt_path = ckpt_path
-
+        raindrop_detector = RaindropDetector.load_from_checkpoint(ckpt_path)
         predicts = trainer.predict(model=raindrop_detector, datamodule=data_module)
 
         for predict in predicts:
