@@ -47,7 +47,7 @@ class RaindropDetector(pl.LightningModule):
     def predict_step(self, batch, batch_idx):
         print(f"predict step")
         image = batch
-        prediction = np.where(F.sigmoid(self(image)) > 0.5, 1, 0)
+        prediction = torch.where(F.sigmoid(self(image)) > 0.5, 1, 0)
         print(prediction)
 
     def configure_optimizers(self):
