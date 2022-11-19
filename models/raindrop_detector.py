@@ -42,7 +42,6 @@ class RaindropDetector(pl.LightningModule):
 
         self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
         self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
-        
 
     def configure_optimizers(self):
         # define optimizer
