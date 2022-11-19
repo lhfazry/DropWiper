@@ -45,10 +45,9 @@ class RaindropDetector(pl.LightningModule):
         self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
 
     def predict_step(self, batch, batch_idx):
-        print(f"predict step")
         image = batch
         prediction = torch.where(F.sigmoid(self(image)) > 0.5, 1, 0)
-        print(prediction)
+        print(f"prediction: {prediction.shape}")
 
     def configure_optimizers(self):
         # define optimizer
