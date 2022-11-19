@@ -5,6 +5,7 @@ import torch.nn as nn
 import torchmetrics
 import torch.nn.functional as F
 import segmentation_models_pytorch as smp
+import numpy as np
 
 from torch.nn import functional as F
 from backbones.ard_cnn import ARDCNN
@@ -42,6 +43,11 @@ class RaindropDetector(pl.LightningModule):
 
         self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
         self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
+
+    def predict_step(self, batch, batch_idx):
+        image = batch
+        prediction = np.where(F.sigmoid(self(image)) > 0.5, 1, 0)
+        print(prediction)
 
     def configure_optimizers(self):
         # define optimizer

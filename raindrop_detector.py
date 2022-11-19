@@ -70,6 +70,6 @@ if __name__ == '__main__':
         predicts = trainer.predict(model=raindrop_detector, datamodule=data_module,
             ckpt_path=ckpt_path)
 
-        for predict in predicts:
-            print(predict)
-            print('\n')
+        #for predict in predicts:
+        #    print(predict)
+        #    print('\n')
