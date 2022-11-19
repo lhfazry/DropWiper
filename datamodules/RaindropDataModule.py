@@ -1,7 +1,8 @@
 import pytorch_lightning as pl
 import os
 from torch.utils.data import DataLoader
-from datasets.RaindropDataset import RaindropDataset, RaindropPredictDataset
+from datasets.RaindropDataset import RaindropDataset
+from datasets.RaindropPredictDataset import RaindropPredictDataset
 from glob import glob
 
 class RaindropDataModule(pl.LightningDataModule):
