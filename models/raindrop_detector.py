@@ -17,8 +17,8 @@ class RaindropDetector(pl.LightningModule):
         #self.dice = smp.losses.DiceLoss(mode='binary')
         self.bce = nn.BCEWithLogitsLoss()
 
-        #self.raindrop_detector = ARDCNN(in_channels)
-        self.raindrop_detector = UNet(out_classes=1)
+        self.raindrop_detector = ARDCNN(in_channels)
+        #self.raindrop_detector = UNet(out_classes=1)
 
     def forward(self, x):
         return self.raindrop_detector(x)
