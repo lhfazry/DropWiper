@@ -17,6 +17,7 @@ class RaindropDataset(torch.utils.data.Dataset):
             raise ValueError(f"Path does not exist: {data_dir}")
 
         self.data = glob(os.path.join(data_dir, "*.png"))
+        self.masks = None
 
         if masks_dir is not None:
             self.masks = glob(os.path.join(masks_dir, "*.png"))
