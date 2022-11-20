@@ -70,7 +70,7 @@ if __name__ == '__main__':
         if not log:
             trainer.logger = False
 
-        output_dir = os.path.join(Path(data_dir).parent, 'mask')
+        output_dir = os.path.join(Path(data_dir), 'mask')
 
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
