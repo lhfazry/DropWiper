@@ -46,7 +46,7 @@ class RaindropDataset(torch.utils.data.Dataset):
         if self.masks is None:
             image = center_crop(image, (128, 128))
             image = image.transpose(2, 0, 1).astype('float32')
-            image /= 256.
+            image = (image - 128) / 128.
 
             return image, Path(img_path).name
 
@@ -61,7 +61,7 @@ class RaindropDataset(torch.utils.data.Dataset):
         mask = np.expand_dims(mask, axis=0)
         
         image = image.transpose(2, 0, 1).astype('float32')
-        image /= 256.
+        image = (image - 128) / 128.
 
         return image, mask
             
