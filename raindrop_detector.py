@@ -78,6 +78,9 @@ if __name__ == '__main__':
         predictions, filenames = trainer.predict(model=raindrop_detector, datamodule=data_module,
             ckpt_path=ckpt_path)
 
+        print(predictions)
+        print(filenames)
+        
         for i in range(predictions.shape[0]):
             image = cv2.cvtColor(predictions[i], cv2.COLOR_RGB2BGR)
             cv2.imwrite(os.path.join(output_dir, filenames[i]), image)
