@@ -62,7 +62,7 @@ class RaindropDetector(pl.LightningModule):
         #)
 
         #torch.optim.lr_scheduler.
-        optimizer = torch.optim.AdamW(self.parameters(), lr=1e-4, weight_decay=1e-4)
+        optimizer = torch.optim.AdamW(self.parameters(), lr=1e-3, weight_decay=1e-4)
         lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.85, verbose=True)
 
         return [optimizer], [lr_scheduler]
