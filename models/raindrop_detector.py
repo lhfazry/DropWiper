@@ -27,6 +27,8 @@ class RaindropDetector(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         image, mask = batch
         prediction = self(image)
+        print(f"prediction: {prediction.shape}")
+        
         #loss = self.dice(prediction, mask)
         loss = self.bce(prediction, mask.float())
 
