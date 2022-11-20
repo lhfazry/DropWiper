@@ -80,6 +80,9 @@ if __name__ == '__main__':
 
         images = predictions[0]
         filenames = predictions[1]
+
+        print(images)
+        print(filenames)
         
         for i in range(images.shape[0]):
             image = cv2.cvtColor(images[i], cv2.COLOR_RGB2BGR)
