@@ -83,5 +83,5 @@ if __name__ == '__main__':
             filenames = predictions[i][1]
 
             for j in range(images.shape[0]):
-                image = cv2.cvtColor(images[j], cv2.COLOR_RGB2BGR)
+                image = cv2.cvtColor(images[j].astype('uint8'), cv2.COLOR_RGB2BGR)
                 cv2.imwrite(os.path.join(output_dir, filenames[j]), image)

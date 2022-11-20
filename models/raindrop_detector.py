@@ -49,7 +49,7 @@ class RaindropDetector(pl.LightningModule):
         images, filenames = batch
         predictions = torch.where(torch.sigmoid(self(images)) > 0.5, 1, 0)
 
-        return (predictions.permute((0, 2, 3, 1)).cpu().numpy().astype('uint8') + 128) * 128, filenames
+        return (predictions.permute((0, 2, 3, 1)).cpu().numpy() * 128) + 128, filenames
 
     def configure_optimizers(self):
         # define optimizer
