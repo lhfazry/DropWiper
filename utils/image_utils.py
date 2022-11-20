@@ -1,4 +1,5 @@
 import imutils
+import cv2
 
 def center_crop_old(img, dim, with_resize = True):
     img_shape = img.shape
