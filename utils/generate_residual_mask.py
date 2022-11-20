@@ -43,4 +43,4 @@ if __name__ == '__main__':
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S')
 
-    generate_residual_mask(args.input_dir, args.output_dir)
+    generate_residual_mask(args.input_dir)
