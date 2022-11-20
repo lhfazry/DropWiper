@@ -19,6 +19,7 @@ def generate_residual_mask(input_dir):
     gts = glob(os.path.join(input_dir, 'gt', '*.png'))
 
     for idx in range(len(data)):
+        print(f"Processing: {data[idx]}, {gts[idx]}")
         rain_img = cv2.cvtColor(cv2.imread(data[idx]), cv2.COLOR_BGR2GRAY)
         clean_img = cv2.cvtColor(cv2.imread(gts[idx]), cv2.COLOR_BGR2GRAY)
 
