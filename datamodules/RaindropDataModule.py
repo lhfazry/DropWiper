@@ -15,7 +15,7 @@ class RaindropDataModule(pl.LightningDataModule):
         self.num_workers = num_workers
 
     def setup(self, stage = None):
-        print(f'setup: {self.root}')
+        print(f'setup: {self.root}, state: {stage}')
 
         # Assign train/val datasets for use in dataloaders
         if stage == "fit" or stage is None:
