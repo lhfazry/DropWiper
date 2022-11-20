@@ -61,12 +61,12 @@ class RaindropDataset(torch.utils.data.Dataset):
             if min(image.shape) > 128:
                 image = imutils.resize(image, height=256)
                 mask = imutils.resize(mask, height=256)
-                
+
             sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
         elif min(image.shape) > 128:
-            image = center_crop(image, (128, 128))
-            mask = center_crop(mask, (128, 128))
+            image = scale_image(center_crop(image, (480, 480)), 128/480)
+            mask = scale_image(center_crop(mask, (480, 480)), 128/480)
 
         mask = np.where(mask > 0, 1, 0)
         mask = np.expand_dims(mask, axis=0)
