@@ -41,7 +41,7 @@ class RaindropDataModule(pl.LightningDataModule):
 
         if stage == "predict" or stage is None:
             self.predict_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'test', 'data'))
+                                data_dir=os.path.join(self.root, 'val', 'data'))
 
     def train_dataloader(self):
         return DataLoader(self.train_set, batch_size=self.batch_size, num_workers=self.num_workers, shuffle=True)
