@@ -20,13 +20,17 @@ class RaindropDataset(torch.utils.data.Dataset):
             raise ValueError(f"Path does not exist: {data_dir}")
 
         self.data = glob(os.path.join(data_dir, "*.png"))
+        self.data.sort()
         self.masks = None
 
         if masks_dir is not None:
             self.masks = glob(os.path.join(masks_dir, "*.png"))
+            self.masks.sort()
 
         train_transform = [
-            #album.RandomCrop(height=64, width=64, always_apply=True),
+            #album.RandomCrop(height=128, width=128, always_apply=True),
+            album.augmentations.crops.transforms.RandomResizedCrop(height=128, 
+                width=128, always_apply=True),
             album.OneOf(
                 [
                     album.HorizontalFlip(p=1),

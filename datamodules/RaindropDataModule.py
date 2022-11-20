@@ -21,27 +21,27 @@ class RaindropDataModule(pl.LightningDataModule):
         if stage == "fit" or stage is None:
             self.train_set = RaindropDataset(
                                 data_dir=os.path.join(self.root, 'train', 'data'),
-                                masks_dir=os.path.join(self.root, 'train', 'masks'),
+                                masks_dir=os.path.join(self.root, 'train', 'mask'),
                                 augmented=True)
             
             self.val_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'val', 'data'),
-                                masks_dir=os.path.join(self.root, 'val', 'masks'))
+                                data_dir=os.path.join(self.root, 'test_a', 'data'),
+                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
 
         if stage == "validate" or stage is None:
             self.val_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'val', 'data'),
-                                masks_dir=os.path.join(self.root, 'val', 'masks'))
+                                data_dir=os.path.join(self.root, 'test_a', 'data'),
+                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
             self.test_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'val', 'data'),
-                                masks_dir=os.path.join(self.root, 'val', 'masks'))
+                                data_dir=os.path.join(self.root, 'test_a', 'data'),
+                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
 
         if stage == "predict" or stage is None:
             self.predict_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'data'))
+                                data_dir=os.path.join(self.root, 'test_b'))
 
     def train_dataloader(self):
         return DataLoader(self.train_set, batch_size=self.batch_size, num_workers=self.num_workers, shuffle=True)

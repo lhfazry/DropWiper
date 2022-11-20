@@ -34,7 +34,7 @@ def generate_residual_mask(input_dir):
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Generate residual mask')
-    parser.add_argument("--input_dir", type=str, default="/workspace/DropWiper/datasets/RainDrop/train", help="Input directory")
+    parser.add_argument("--input_dir", type=str, default="/workspace/DropWiper/datasets/RainDrop/", help="Input directory")
     args = parser.parse_args()
 
     return args
@@ -47,4 +47,7 @@ if __name__ == '__main__':
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S')
 
-    generate_residual_mask(args.input_dir)
+    split = ['train', 'test_a']
+
+    for item_split in split:
+        generate_residual_mask(os.path.join(args.input_dir, item_split))
