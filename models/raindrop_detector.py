@@ -15,11 +15,11 @@ class RaindropDetector(pl.LightningModule):
     def __init__(self, in_channels=3):
         super().__init__()
         self.save_hyperparameters()
-        self.dice = smp.losses.DiceLoss(mode='binary')
-        #self.bce = nn.BCEWithLogitsLoss()
+        #self.dice = smp.losses.DiceLoss(mode='binary')
+        self.bce = nn.BCEWithLogitsLoss()
 
-        #self.raindrop_detector = ARDCNN(in_channels)
-        self.raindrop_detector = UNet(out_classes=1)
+        self.raindrop_detector = ARDCNN(in_channels)
+        #self.raindrop_detector = UNet(out_classes=1)
 
     def forward(self, x):
         return self.raindrop_detector(x)
@@ -28,8 +28,8 @@ class RaindropDetector(pl.LightningModule):
         image, mask = batch
         prediction = self(image)
 
-        loss = self.dice(prediction, mask)
-        #loss = self.bce(prediction, mask.float())
+        #loss = self.dice(prediction, mask)
+        loss = self.bce(prediction, mask.float())
 
         self.log("loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
         self.logger.experiment.add_scalars('loss', {'train': loss}, global_step=self.current_epoch) 
@@ -39,8 +39,8 @@ class RaindropDetector(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         image, mask = batch
         prediction = self(image)
-        loss = self.dice(prediction, mask)
-        #loss = self.bce(prediction, mask.float())
+        #loss = self.dice(prediction, mask)
+        loss = self.bce(prediction, mask.float())
 
         self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
         self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
