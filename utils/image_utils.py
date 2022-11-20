@@ -6,9 +6,9 @@ def center_crop(img, dim, with_resize = True):
     
     if with_resize:
         if width > height:
-            img = imutils.resize(img, height=height)
+            img = imutils.resize(img, height=dim[1])
         else:
-            img = imutils.resize(img, width=width)
+            img = imutils.resize(img, width=dim[0])
 
 	# process crop width and height for max available dimension
     crop_width = dim[0] if dim[0] < width else width
