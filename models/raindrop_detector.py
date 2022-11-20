@@ -43,7 +43,7 @@ class RaindropDetector(pl.LightningModule):
         loss = self.bce(prediction, mask.float())
 
         self.log("val_loss", loss, on_epoch=True, on_step=True, prog_bar=True, logger=False)
-        self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch) 
+        self.logger.experiment.add_scalars('loss', {'val': loss}, global_step=self.current_epoch)
 
     def predict_step(self, batch, batch_idx):
         images, filenames = batch
@@ -53,7 +53,7 @@ class RaindropDetector(pl.LightningModule):
 
     def configure_optimizers(self):
         # define optimizer
-        #optimizer = torch.optim.Adam([ 
+        #optimizer = torch.optim.Adam([
         #    dict(params=self.parameters(), lr=0.001, weight_decay=0.00001),
         #])
 
