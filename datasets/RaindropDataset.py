@@ -51,15 +51,15 @@ class RaindropDataset(torch.utils.data.Dataset):
             mask = cv2.cvtColor(cv2.imread(mask_path), cv2.COLOR_BGR2GRAY)
             mask = np.where(mask > 0, 1, 0)
             mask = np.expand_dims(mask, axis=0)
-
-            return image, mask
         else:
             image = center_crop(image, (128, 128))
+
+            return image
         
         image = image.transpose(2, 0, 1).astype('float32')
         image = (image - 128) / 128.
 
-        return image
+        return image, mask
             
     def __len__(self):
         return len(self.data)

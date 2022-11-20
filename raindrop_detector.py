@@ -29,7 +29,6 @@ if __name__ == '__main__':
     ckpt_path = params.ckpt_path
     log = params.log
 
-    print(f"data_dir: {data_dir}")
     logger = TensorBoardLogger(save_dir=logs_dir, name="raindrop_detector")
 
     data_module = RaindropDataModule(
