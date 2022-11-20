@@ -14,7 +14,7 @@ classifier_scale: 4.0
 lr_kernel_n_std: 2
 num_samples: 12
 show_progress: true
-timestep_respacing: '250'
+timestep_respacing: 250
 use_kl: false
 predict_xstart: false
 rescale_timesteps: false
