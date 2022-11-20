@@ -10,7 +10,7 @@ import albumentations as album
 import imutils
 from glob import glob
 from pathlib import Path
-from utils.image_utils import center_crop
+from utils.image_utils import center_crop, scale_image
 
 class RaindropDataset(torch.utils.data.Dataset):
     def __init__(self, data_dir, masks_dir = None, augmented=False):
@@ -48,7 +48,7 @@ class RaindropDataset(torch.utils.data.Dataset):
         image = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
 
         if self.masks is None:
-            image = center_crop(image, (128, 128))
+            image = scale_image(center_crop(image, (480, 480)), 128/480)#center_crop(image, (128, 128))
             image = image.transpose(2, 0, 1).astype('float32')
             image = (image - 128) / 128.
 
@@ -62,9 +62,9 @@ class RaindropDataset(torch.utils.data.Dataset):
             #mask = imutils.resize(mask, height=256)
             sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
-        else:
-            image = center_crop(image, (128, 128))
-            mask = center_crop(mask, (128, 128))
+        #else:
+        #    image = center_crop(image, (128, 128))
+        #    mask = center_crop(mask, (128, 128))
 
         mask = np.where(mask > 0, 1, 0)
         mask = np.expand_dims(mask, axis=0)
