@@ -25,23 +25,23 @@ class RaindropDataModule(pl.LightningDataModule):
                                 augmented=True)
             
             self.val_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'test_a', 'data'),
-                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
+                                data_dir=os.path.join(self.root, 'val', 'data'),
+                                masks_dir=os.path.join(self.root, 'val', 'mask'))
 
         if stage == "validate" or stage is None:
             self.val_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'test_a', 'data'),
-                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
+                                data_dir=os.path.join(self.root, 'val', 'data'),
+                                masks_dir=os.path.join(self.root, 'val', 'mask'))
 
         # Assign test dataset for use in dataloader(s)
         if stage == "test" or stage is None:
             self.test_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'test_a', 'data'),
-                                masks_dir=os.path.join(self.root, 'test_a', 'mask'))
+                                data_dir=os.path.join(self.root, 'val', 'data'),
+                                masks_dir=os.path.join(self.root, 'val', 'mask'))
 
         if stage == "predict" or stage is None:
             self.predict_set   = RaindropDataset(
-                                data_dir=os.path.join(self.root, 'test_b'))
+                                data_dir=os.path.join(self.root, 'test'))
 
     def train_dataloader(self):
         return DataLoader(self.train_set, batch_size=self.batch_size, num_workers=self.num_workers, shuffle=True)
