@@ -47,7 +47,7 @@ class RaindropDetector(pl.LightningModule):
 
     def predict_step(self, batch, batch_idx):
         images, filenames = batch
-        predictions = torch.where(torch.sigmoid(self(images)) > 0.5, 255, 0).squeeze()
+        predictions = torch.where(torch.sigmoid(self(images)) > 0.5, 0, 255).squeeze()
 
         return predictions.cpu().numpy().astype('uint8'), filenames
 
