@@ -11,7 +11,7 @@ def create_dir_if_not_exists(dir):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
-def generate_residual_mask(input_dir):
+def generate_residual_mask(input_dir, threshold):
     output_dir = os.path.join(input_dir, 'mask')
     create_dir_if_not_exists(output_dir)
 
@@ -22,12 +22,12 @@ def generate_residual_mask(input_dir):
     gts.sort()
 
     for idx in range(len(data)):
-        print(f"Processing: {data[idx]}, {gts[idx]}")
+        #print(f"Processing: {data[idx]}, {gts[idx]}")
         rain_img = cv2.cvtColor(cv2.imread(data[idx]), cv2.COLOR_BGR2GRAY)
         clean_img = cv2.cvtColor(cv2.imread(gts[idx]), cv2.COLOR_BGR2GRAY)
 
         res = rain_img - clean_img
-        res = np.where(res > 30, 255, 0)
+        res = np.where(res > threshold, 255, 0)
 
         cv2.imwrite(os.path.join(output_dir, Path(data[idx]).name), res)
     
@@ -35,6 +35,8 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Generate residual mask')
     parser.add_argument("--input_dir", type=str, default="/workspace/DropWiper/datasets/RainDrop/", help="Input directory")
+    parser.add_argument("--threshold", type=int, default=30, help="threshold")
+    
     args = parser.parse_args()
 
     return args
@@ -50,4 +52,4 @@ if __name__ == '__main__':
     split = ['train', 'test_a']
 
     for item_split in split:
-        generate_residual_mask(os.path.join(args.input_dir, item_split))
+        generate_residual_mask(os.path.join(args.input_dir, item_split), args.threshold)
