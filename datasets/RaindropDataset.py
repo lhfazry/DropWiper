@@ -28,9 +28,9 @@ class RaindropDataset(torch.utils.data.Dataset):
             self.masks.sort()
 
         train_transform = [
-            #album.RandomCrop(height=128, width=128, always_apply=True),
-            album.augmentations.crops.transforms.RandomResizedCrop(height=128, 
-                width=128, always_apply=True),
+            album.RandomCrop(height=128, width=128, always_apply=True),
+            #album.augmentations.crops.transforms.RandomResizedCrop(height=128, 
+            #    width=128, always_apply=True),
             album.OneOf(
                 [
                     album.HorizontalFlip(p=1),
