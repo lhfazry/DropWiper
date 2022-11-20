@@ -21,6 +21,9 @@ def center_crop(img, dim, with_resize = True):
     mid_x, mid_y = int(width/2), int(height/2)
     cw2, ch2 = int(crop_width/2), int(crop_height/2)
 
-    crop_img = img[mid_y-ch2:mid_y+ch2, mid_x-cw2:mid_x+cw2]
+    if len(img_shape) == 3:
+        crop_img = img[:, mid_y-ch2:mid_y+ch2, mid_x-cw2:mid_x+cw2]
+    elif len(img_shape) == 2:
+        crop_img = img[mid_y-ch2:mid_y+ch2, mid_x-cw2:mid_x+cw2]
 	
     return crop_img
