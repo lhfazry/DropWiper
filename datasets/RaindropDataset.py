@@ -58,13 +58,15 @@ class RaindropDataset(torch.utils.data.Dataset):
         mask = cv2.cvtColor(cv2.imread(mask_path), cv2.COLOR_BGR2GRAY)
 
         if self.augmented:
-            #image = imutils.resize(image, height=256)
-            #mask = imutils.resize(mask, height=256)
+            if min(image.shape) > 128:
+                image = imutils.resize(image, height=256)
+                mask = imutils.resize(mask, height=256)
+                
             sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
-        #else:
-        #    image = center_crop(image, (128, 128))
-        #    mask = center_crop(mask, (128, 128))
+        elif min(image.shape) > 128:
+            image = center_crop(image, (128, 128))
+            mask = center_crop(mask, (128, 128))
 
         mask = np.where(mask > 0, 1, 0)
         mask = np.expand_dims(mask, axis=0)
