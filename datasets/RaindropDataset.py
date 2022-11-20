@@ -26,7 +26,7 @@ class RaindropDataset(torch.utils.data.Dataset):
             self.masks = glob(os.path.join(masks_dir, "*.png"))
 
         train_transform = [    
-            album.RandomCrop(height=64, width=64, always_apply=True),
+            #album.RandomCrop(height=64, width=64, always_apply=True),
             album.OneOf(
                 [
                     album.HorizontalFlip(p=1),
