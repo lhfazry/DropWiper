@@ -60,6 +60,9 @@ class RaindropDataset(torch.utils.data.Dataset):
         if self.augmented:
             sample = self.augmentation(image=image, mask=mask)
             image, mask = sample['image'], sample['mask']
+        else:
+            image = center_crop(image, (128, 128))
+            mask = center_crop(mask, (128, 128))
 
         mask = np.where(mask > 0, 1, 0)
         mask = np.expand_dims(mask, axis=0)
