@@ -9,6 +9,7 @@ import random
 import albumentations as album
 import imutils
 from glob import glob
+from pathlib import Path
 from utils.image_utils import center_crop
 
 class RaindropDataset(torch.utils.data.Dataset):
@@ -47,7 +48,7 @@ class RaindropDataset(torch.utils.data.Dataset):
             image = image.transpose(2, 0, 1).astype('float32')
             image /= 256.
 
-            return image
+            return image, Path(img_path).name
 
         mask_path = self.masks[index]
         mask = cv2.cvtColor(cv2.imread(mask_path), cv2.COLOR_BGR2GRAY)

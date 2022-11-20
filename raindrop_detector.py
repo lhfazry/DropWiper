@@ -1,9 +1,12 @@
 import argparse
 import pytorch_lightning as pl
+import os
+import cv2
 from models.raindrop_detector import RaindropDetector
 from datamodules.RaindropDataModule import RaindropDataModule
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
+from pathlib import Path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="train", help="Train or test")
@@ -67,10 +70,18 @@ if __name__ == '__main__':
         if not log:
             trainer.logger = False
 
+        output_dir = os.path.join(Path(data_dir).parent, 'mask')
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
         #raindrop_detector = RaindropDetector.load_from_checkpoint(ckpt_path)
-        predicts = trainer.predict(model=raindrop_detector, datamodule=data_module,
+        predictions, filenames = trainer.predict(model=raindrop_detector, datamodule=data_module,
             ckpt_path=ckpt_path)
 
-        #for predict in predicts:
+        for i in range(predictions.shape[0]):
+            image = cv2.cvtColor(predictions[i], cv2.COLOR_RGB2BGR)
+            cv2.imwrite(filenames[i], image)
+            
         #    print(predict)
         #    print('\n')
