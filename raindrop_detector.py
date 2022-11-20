@@ -77,13 +77,11 @@ if __name__ == '__main__':
 
         predictions = trainer.predict(model=raindrop_detector, datamodule=data_module,
             ckpt_path=ckpt_path)
-
-        images = predictions[0]
-        filenames = predictions[1]
-
-        print(images)
-        print(filenames)
         
-        for i in range(images.shape[0]):
-            image = cv2.cvtColor(images[i], cv2.COLOR_RGB2BGR)
-            cv2.imwrite(os.path.join(output_dir, filenames[i]), image)
+        for i in range(len(predictions)):
+            images = predictions[i][0]
+            filenames = predictions[i][1]
+
+            for j in range(images.shape[0]):
+                image = cv2.cvtColor(images[j], cv2.COLOR_RGB2BGR)
+                cv2.imwrite(os.path.join(output_dir, filenames[j]), image)
