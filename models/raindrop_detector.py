@@ -26,7 +26,10 @@ class RaindropDetector(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         image, mask = batch
+        print(f"image: {image.shape}")
+        
         prediction = self(image)
+        print(f"prediction: {prediction.shape}")
 
         #loss = self.dice(prediction, mask)
         loss = self.bce(prediction, mask.float())
@@ -47,8 +50,9 @@ class RaindropDetector(pl.LightningModule):
 
     def predict_step(self, batch, batch_idx):
         image = batch
+        print(f"image: {image.shape}")
+
         prediction = self(image)
-        print(f"prediction: {prediction.shape}")
         prediction = torch.where(torch.sigmoid(prediction) > 0.5, 1, 0)
         print(f"prediction op: {prediction.shape}")
 
