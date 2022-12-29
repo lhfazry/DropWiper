@@ -27,7 +27,7 @@ def generate_residual_mask(input_dir, threshold):
         clean_img = cv2.cvtColor(cv2.imread(gts[idx]), cv2.COLOR_BGR2GRAY)
 
         res = rain_img - clean_img
-        res = np.where(res > threshold, 255, 0)
+        res = np.where(res > threshold, 0, 255)
 
         cv2.imwrite(os.path.join(output_dir, Path(data[idx]).name), res)
     
