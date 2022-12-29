@@ -3,7 +3,7 @@ class_cond: false
 diffusion_steps: 1000
 learn_sigma: true
 noise_schedule: linear
-num_channels: 192
+num_channels: 256
 num_head_channels: 64
 num_heads: 4
 num_res_blocks: 3
