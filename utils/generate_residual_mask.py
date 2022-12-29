@@ -49,7 +49,7 @@ if __name__ == '__main__':
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S')
 
-    split = ['train', 'test_a']
+    split = ['train', 'test', 'val']
 
     for item_split in split:
         generate_residual_mask(os.path.join(args.input_dir, item_split), args.threshold)
