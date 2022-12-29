@@ -49,8 +49,8 @@ data:
   eval:
     test_raindrop:
       mask_loader: true
-      gt_path: /workspace/DropWiper/datasets/RainDrop_resize/test/data
-      mask_path: /workspace/DropWiper/datasets/RainDrop_resize/test/mask
+      gt_path: /workspace/DropWiper/datasets/RainDrop_resized/test/data
+      mask_path: /workspace/DropWiper/datasets/RainDrop_resized/test/mask
       image_size: 128
       class_cond: false
       deterministic: true
