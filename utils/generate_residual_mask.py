@@ -12,27 +12,24 @@ def create_dir_if_not_exists(dir):
         os.makedirs(dir)
 
 def generate_residual_mask(input_dir, threshold):
-    splits = ['train', 'val', 'test']
+    output_dir = os.path.join(input_dir, 'mask')
+    create_dir_if_not_exists(output_dir)
 
-    for split in splits:
-        output_dir = os.path.join(input_dir, split, 'mask')
-        create_dir_if_not_exists(output_dir)
+    data = glob(os.path.join(input_dir, 'data', '*.png'))
+    gts = glob(os.path.join(input_dir, 'gt', '*.png'))
 
-        data = glob(os.path.join(input_dir, split, 'data', '*.png'))
-        gts = glob(os.path.join(input_dir, split, 'gt', '*.png'))
+    data.sort()
+    gts.sort()
 
-        data.sort()
-        gts.sort()
+    for idx in range(len(data)):
+        #print(f"Processing: {data[idx]}, {gts[idx]}")
+        rain_img = cv2.cvtColor(cv2.imread(data[idx]), cv2.COLOR_BGR2GRAY)
+        clean_img = cv2.cvtColor(cv2.imread(gts[idx]), cv2.COLOR_BGR2GRAY)
 
-        for idx in range(len(data)):
-            #print(f"Processing: {data[idx]}, {gts[idx]}")
-            rain_img = cv2.cvtColor(cv2.imread(data[idx]), cv2.COLOR_BGR2GRAY)
-            clean_img = cv2.cvtColor(cv2.imread(gts[idx]), cv2.COLOR_BGR2GRAY)
+        res = rain_img - clean_img
+        res = np.where(res > threshold, 0, 255)
 
-            res = rain_img - clean_img
-            res = np.where(res > threshold, 0, 255)
-
-            cv2.imwrite(os.path.join(output_dir, Path(data[idx]).name), res)
+        cv2.imwrite(os.path.join(output_dir, Path(data[idx]).name), res)
     
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -52,7 +49,7 @@ if __name__ == '__main__':
         level=logging.INFO,
         datefmt='%Y-%m-%d %H:%M:%S')
 
-    split = ['train', 'test', 'val']
+    splits = ['train', 'test', 'val']
 
-    for item_split in split:
-        generate_residual_mask(os.path.join(args.input_dir, item_split), args.threshold)
+    for split in splits:
+        generate_residual_mask(os.path.join(args.input_dir, split), args.threshold)
