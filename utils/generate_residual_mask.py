@@ -35,7 +35,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description='Generate residual mask')
     parser.add_argument("--input_dir", type=str, default="/workspace/DropWiper/datasets/RainDrop/", help="Input directory")
-    parser.add_argument("--threshold", type=int, default=30, help="threshold")
+    parser.add_argument("--threshold", type=int, default=200, help="threshold")
     
     args = parser.parse_args()
 
