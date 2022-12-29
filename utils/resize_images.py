@@ -30,7 +30,7 @@ def resize_images(input_dir, output_dir, image_size):
             for file in files:
                 image = cv2.cvtColor(cv2.imread(file), cv2.COLOR_BGR2RGB)
                 resized = scale_image(center_crop(image, (480, 480)), image_size/480)#center_crop(image, (128, 128))
-                print(f"resized: {resized.shape}")
+                #print(f"resized: {resized.shape}")
                 cv2.imwrite(os.path.join(dir, Path(file).stem + ".png"), cv2.cvtColor(resized, cv2.COLOR_RGB2BGR))
 
 def parse_args():
