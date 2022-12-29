@@ -58,7 +58,7 @@ data:
       random_flip: false
       return_dict: true
       drop_last: false
-      batch_size: 8
+      batch_size: 2
       return_dataloader: true
       ds_conf:
         name: random_thick_256
